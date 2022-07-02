@@ -19,7 +19,7 @@
 export default {
   data() {
     return {
-      messages: ["Первый нах"],
+      messages: [],
       value: null,
     };
   },

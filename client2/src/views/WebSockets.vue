@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>WebSockets</h1>
+    <h1>Web sockets</h1>
     <div class="input-block">
       <input type="text" v-model="value" />
       <button @click="send">Send</button>
     </div>
-    <div style="display:flex; justify-content: center">
+    <div style="display: flex; justify-content: center">
       <div class="messages-block">
         <div v-for="(message, index) in messages" :key="index">
           {{ message }}
@@ -19,12 +19,26 @@
 export default {
   data() {
     return {
-      messages: ["[thyz"],
+      messages: [],
       value: null,
+      socket: null,
+    };
+  },
+  mounted() {
+    this.socket = new WebSocket("ws://localhost:5000");
+    this.socket.onopen = () => {
+      this.socket.send(JSON.stringify("Connection opened"));
+    };
+    this.socket.onmessage = (event) => {
+      this.messages = [event.data, ...this.messages];
     };
   },
   methods: {
-    send() {},
+    async send() {
+      if (this.value) {
+        this.socket.send(JSON.stringify(this.value));
+      }
+    },
   },
 };
 </script>
