@@ -19,7 +19,7 @@
 export default {
   data() {
     return {
-      messages: ["Первый нах"],
+      messages: [],
       value: null,
     };
   },
@@ -38,8 +38,8 @@ export default {
       console.log(11);
       let eventSource = new EventSource("http://localhost:5000/connect");
       console.log(eventSource);
-      eventSource.onmessage = (event) =>{
-        this.messages = [JSON.parse(event.data), ...this.messages]
+      eventSource.onmessage = (event) => {
+        this.messages = [JSON.parse(event.data), ...this.messages];
       };
     },
   },
