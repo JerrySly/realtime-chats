@@ -5,7 +5,7 @@
       <input type="text" v-model="value" />
       <button @click="send">Send</button>
     </div>
-    <div style="display:flex; justify-content: center">
+    <div style="display: flex; justify-content: center">
       <div class="messages-block">
         <div v-for="(message, index) in messages" :key="index">
           {{ message }}
@@ -19,12 +19,29 @@
 export default {
   data() {
     return {
-      messages: ["[thyz"],
+      messages: ["Первый нах"],
       value: null,
     };
   },
+  created() {
+    this.get();
+  },
   methods: {
-    send() {},
+    async send() {
+      if (this.value) {
+        await this.$axios.post("http://localhost:5000/new-message", {
+          message: this.value,
+        });
+      }
+    },
+    get() {
+      console.log(11);
+      let eventSource = new EventSource("http://localhost:5000/connect");
+      console.log(eventSource);
+      eventSource.onmessage = (event) =>{
+        this.messages = [JSON.parse(event.data), ...this.messages]
+      };
+    },
   },
 };
 </script>
